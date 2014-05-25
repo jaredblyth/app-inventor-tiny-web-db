@@ -1,0 +1,79 @@
+<html>
+
+<head>
+     <style type="text/css">
+        body {margin-left: 5% ; margin-right: 5%; margin-top: 0.5in;
+             font-family: verdana, arial,"trebuchet ms", helvetica, sans-serif;}
+        ul {list-style: disc;}
+     </style>
+     <title>TinyWeb Database</title>
+</head>
+
+
+<body>
+<h2>TinyWeb Database</h2>
+<table border=0>
+<tr valign="top">
+<td><image src="/images/customLogo.jpg" width="200" hspace="10"></td>
+<td>
+<p>
+This web service stores and retrieves values for Android Apps using the App Inventor TinyWebDB</p>
+
+<p><a href="http://jaredblyth.com/code-examples/app-inventor-make-quiz.apk" title="Download a copy of Make Quiz">Make Quiz</a> and <a href="http://jaredblyth.com/code-examples/app-inventor-take-quiz.apk" title="Download a copy of Take Quiz">Take Quiz</a> are a set of Android apps that communicate with each other over a network.</p>
+
+<p><a href="http://jaredblyth.com/code-examples/app-inventor-make-quiz.apk" title="Download a copy of Make Quiz">Make Quiz</a> allows a user, such as a teacher, to set quiz questions, while <a href="http://jaredblyth.com/code-examples/app-inventor-take-quiz.apk" title="Download a copy of Take Quiz">Take Quiz</a> allows another user, such as a student, to answer the quiz questions.</p>
+
+<p>The questions are stored in a datastore that runs on Google App Engine. The datastore uses python to take requests from the apps, and either store or retreive questions and answers. The App Engine datastore can be administered via a webpage.</p>
+
+
+<p>Download and try <a href="http://jaredblyth.com/code-examples/app-inventor-make-quiz.apk" title="Download a copy of Make Quiz">Make Quiz</a> and <a href="http://jaredblyth.com/code-examples/app-inventor-take-quiz.apk" title="Download a copy of Take Quiz">Take Quiz</a>. You will need to allow your Android device to allow installation of non-Market apps (go to Settings > Applications > Unknown sources). </p>
+
+
+</td> </tr> 
+</table>
+
+    <h3> Search database for a tag</h3>
+    <form action="/getvalue" method="post"
+          enctype=application/x-www-form-urlencoded>
+       <p>Tag:<input type="text" name="tag" /></p>
+       <input type="hidden" name="fmt" value="html">
+       <input type="submit" value="Get value">
+    </form>
+   
+    Returned as value to TinyWebDB component:
+   <b>{{result}}</b>
+
+  <br/>
+<h3>Store a tag-value pair in the database</h3>
+<form action="/storeavalue" method="post"
+		  enctype=application/x-www-form-urlencoded>
+	   <p>Tag: <input type="text" name="tag" size="30"/></p>
+	   <p>Value: <input type="text" name="value" size="30"/></p>
+	   <input type="hidden" name="fmt" value="html">
+	   <input type="submit" value="Store a value">
+	</form>
+ <br/>
+
+	<table border=1>
+	  <tr>
+		 <th>Key</th>
+		 <th>Value</th>
+		 <th>Created (GMT)</th>
+	  </tr>
+	  {% for entry in entryList %}
+	  <tr>
+	         <td>{{entry.tag}}</td>
+		<td>{{entry.value}}</td>
+		<td><font size="-1">{{entry.date}}</font></td>
+          
+	  	<td><form action="/deleteentry" method="post"
+			enctype=application/x-www-form-urlencoded>
+		<input type="hidden" name="entry_key_string" value="{{entry.key}}">
+		<input type="hidden" name="tag" value="{{entry.tag}}">
+			<input type="hidden" name="fmt" value="html">
+		<input type="submit" style="background-color: red" value="Delete"></form></td>
+          </tr>
+	  {% endfor %}
+
+	</table>
+</body></html>
